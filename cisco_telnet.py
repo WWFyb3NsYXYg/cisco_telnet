@@ -1,7 +1,7 @@
 import telnetlib3
 import asyncio
 
-async def apply_telnet_config(commands, host, username, password):
+async def apply_telnet_config(commands, host, username, password, enable_pass=None):
     try:
         reader, writer = await telnetlib3.open_connection(host)
         await reader.read_until("Username: ")
@@ -10,8 +10,9 @@ async def apply_telnet_config(commands, host, username, password):
         writer.write(password + "\n")
 
         writer.write("enable\n")
-        await reader.read_until("Password: ")
-        writer.write(password + "\n")
+        if enable_pass:
+            await reader.read_until("Password: ")
+            writer.write(enable_pass + "\n")
 
         writer.write("conf t\n")
         output = await reader.read_until("(config)#", timeout=2)

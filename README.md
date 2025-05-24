@@ -33,11 +33,34 @@ async def main():
         commands,
         host="192.168.1.1",
         username="admin",
-        password="your_password"
+        password="your_password",
+        enable_pass="your_enable_password"  # Optional, if required
     )
 
 asyncio.run(main())
 ```
+
+## Example integration
+
+You can also use this module as part of a larger automation script, for example:
+
+```python
+from cisco_telnet import apply_telnet_config
+import asyncio
+
+commands = [
+    "hostname TestRouter",
+    "interface Loopback0",
+    "ip address 10.1.1.1 255.255.255.255"
+]
+
+asyncio.run(apply_telnet_config(commands, "10.0.0.1", "admin", "password"))
+```
+**Parameter explanation:**
+
+- `username="admin"` — username for Telnet login to the Cisco device.
+- `password="your_password"` — password for Telnet login.
+- `enable_pass="your_enable_password"` — enable mode password (optional, if required).
 
 ## License
 
